@@ -34,12 +34,15 @@ def get_employee_todo_progress(employee_id):
     except urllib.error.URLError as e:
         print(f"Error al obtener datos: {e}")
 
+
+
+
 def export_to_csv(employee_id, employee_name, completed_tasks):
     # Crear datos CSV
     csv_data = [["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"]]
     for task in completed_tasks:
-        task_completed_status = "Completada" if task['completed'] else "Pendiente"
-        csv_data.append([employee_id, employee_name, task_completed_status, task['title']])
+        task_completed_status = "True" if task['completed'] else "False"
+        csv_data.append([str(employee_id), employee_name, task_completed_status, f'"{task["title"]}"'])
 
     # Crear el nombre de archivo CSV
     csv_filename = f"{employee_id}.csv"
@@ -48,6 +51,9 @@ def export_to_csv(employee_id, employee_name, completed_tasks):
     with open(csv_filename, mode='w', newline='', encoding='utf-8') as csv_file:
         csv_writer = csv.writer(csv_file)
         csv_writer.writerows(csv_data)
+
+    print(f"CSV file '{csv_filename}' creado exitosamente con las tareas completadas para el empleado {employee_name}.")
+
 
     print(f"CSV file '{csv_filename}' creado exitosamente con las tareas completadas para el empleado {employee_name}.")
 
