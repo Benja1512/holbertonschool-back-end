@@ -5,37 +5,41 @@ import sys
 import csv
 
 def get_employee_todo_progress(employee_id):
-    # URL del endpoint de la API
+    # 1. URL del endpoint de la API
     api_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}/todos'
 
     try:
-        # Obtener la lista de tareas pendientes del empleado
+        #  2. Obtener la lista de tareas pendientes del empleado
         with urllib.request.urlopen(api_url) as response:
             todos = json.loads(response.read().decode('utf-8'))
 
-        # Obtener el nombre del empleado
+        # 3. Obtener el nombre del empleado
         employee_name = todos[0].get('username') or todos[0].get('name') or 'Desconocido'
 
-        # Contar las tareas completadas y el número total de tareas
+        # 4. Contar las tareas completadas y el número total de tareas
         completed_tasks = [task for task in todos if task['completed']]
         number_of_done_tasks = len(completed_tasks)
         total_number_of_tasks = len(todos)
 
-        # Mostrar información del progreso
+        # 5. Mostrar información del progreso
         print(f"Empleado {employee_name} ha completado tareas ({number_of_done_tasks}/{total_number_of_tasks}):")
         
-        # Mostrar los títulos de las tareas completadas
+        # 6. Mostrar los títulos de las tareas completadas
         for task in completed_tasks:
             print(f"\t{task['title']}")
 
-        # Llamar a la función para exportar a CSV
+        #--------------------
+        # EXPORT DATA TO CSV 
+        #--------------------
+        # 7. Llamar a la función para exportar a CSV
         export_to_csv(employee_id, employee_name, completed_tasks)
 
     except urllib.error.URLError as e:
         print(f"Error al obtener datos: {e}")
-
-
-
+    
+    #----------------------------------------
+    # export data into CSV format
+    #-----------------------------------------
 
 def export_to_csv(employee_id, employee_name, completed_tasks):
     # Crear datos CSV
@@ -57,6 +61,9 @@ def export_to_csv(employee_id, employee_name, completed_tasks):
 
     print(f"CSV file '{csv_filename}' creado exitosamente con las tareas completadas para el empleado {employee_name}.")
 
+    #---------------------------
+    # executable function 
+    #--------------------------
 if __name__ == "__main__":
     # Verificar si se proporciona un ID de empleado como argumento de la línea de comandos
     if len(sys.argv) != 2:
