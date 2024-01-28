@@ -2,7 +2,9 @@
 import urllib.request
 import json
 import sys
-
+"""
+    a given employee ID return his/her result info
+"""
 def get_employee_todo_progress(employee_id):
     # URL del endpoint de la API
     api_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}/todos'
